@@ -1,0 +1,79 @@
+{
+  "variable": {
+    "primary_azs": {
+      "default": {
+        "ap-northeast-1": "ap-northeast-1a",
+        "ap-southeast-1": "ap-southeast-1a",
+        "ap-southeast-2": "ap-southeast-2a",
+        "eu-central-1": "eu-central-1a",
+        "eu-west-1": "eu-west-1a",
+        "sa-east-1": "sa-east-1a",
+        "us-east-1": "us-east-1a",
+        "us-west-1": "us-west-1a",
+        "us-west-2": "us-west-2a"
+      }
+    },
+    "secondary_azs": {
+      "default": {
+        "ap-northeast-1": "ap-northeast-1b",
+        "ap-southeast-1": "ap-southeast-1b",
+        "ap-southeast-2": "ap-southeast-2b",
+        "eu-central-1": "eu-central-1b",
+        "eu-west-1": "eu-west-1b",
+        "sa-east-1": "sa-east-1b",
+        "us-east-1": "us-east-1b",
+        "us-west-1": "us-west-1b",
+        "us-west-2": "us-west-2b"
+      }
+    },
+    "tertiary_azs": {
+      "default": {
+        "ap-northeast-1": "ap-northeast-1c",
+        "eu-west-1": "eu-west-1c",
+        "sa-east-1": "sa-east-1c",
+        "us-east-1": "us-east-1c",
+        "us-west-1": "us-west-1c",
+        "us-west-2": "us-west-2c"
+      }
+    },
+    "list_all": {
+      "default": {
+        "ap-northeast-1": "ap-northeast-1a,ap-northeast-1b,ap-northeast-1c",
+        "ap-southeast-1": "ap-southeast-1a,ap-southeast-1b",
+        "ap-southeast-2": "ap-southeast-2a,ap-southeast-2b",
+        "eu-central-1": "eu-central-1a,eu-central-1b",
+        "eu-west-1": "eu-west-1a,eu-west-1b,eu-west-1c",
+        "sa-east-1": "sa-east-1a,sa-east-1b,sa-east-1c",
+        "us-east-1": "us-east-1a,us-east-1b,us-east-1c,us-east-1d,us-east-1e",
+        "us-west-1": "us-west-1a,us-west-1b,us-west-1c",
+        "us-west-2": "us-west-2a,us-west-2b,us-west-2c"
+      }
+    },
+    "list_letters": {
+      "default": {
+        "ap-northeast-1": "a,b,c",
+        "ap-southeast-1": "a,b",
+        "ap-southeast-2": "a,b",
+        "eu-central-1": "a,b",
+        "eu-west-1": "a,b,c",
+        "sa-east-1": "a,b,c",
+        "us-east-1": "a,b,c,d,e",
+        "us-west-1": "a,b,c",
+        "us-west-2": "a,b,c"
+      }
+    },
+    "az_counts": {
+      "default": {
+        "ap-northeast-1": "3",
+        "ap-southeast-1": "2",
+        "ap-southeast-2": "2",
+        "eu-central-1": "2",
+        "eu-west-1": "3",
+        "sa-east-1": "3",
+        "us-east-1": "5",
+        "us-west-1": "3",
+        "us-west-2": "3"
+      }
+    }
+  }
+}
