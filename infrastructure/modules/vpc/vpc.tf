@@ -3,7 +3,7 @@
 
 
 # required stuff
-variable "name" {
+variable "env" {
   description = "the podio environment stack name"
 }
 
@@ -56,7 +56,7 @@ resource "aws_vpc" "main" {
   }
 
   tags {
-    Name = "${var.name}"
+    Name = "${var.env}"
   }
 }
 
@@ -66,7 +66,7 @@ resource "aws_vpc_dhcp_options" "main_opts" {
   domain_name = "${module.meta.host_domain}"
   domain_name_servers = ["AmazonProvidedDNS"]
   tags {
-    Name = "${var.name}-dhcp-opts"
+    Name = "${var.env}-dhcp-opts"
   }
 }
 resource "aws_vpc_dhcp_options_association" "dns_resolver" {
@@ -92,7 +92,7 @@ resource "aws_subnet" "public" {
   }
 
   tags {
-    Name = "${var.name}-public-subnet-${element(split(",", module.az.list_all), count.index)}"
+    Name = "${var.env}-public-subnet-${element(split(",", module.az.list_all), count.index)}"
   }
 }
 
@@ -111,7 +111,7 @@ resource "aws_subnet" "private" {
 
 
   tags {
-    Name = "${var.name}-private-subnet-${element(split(",", module.az.list_all), count.index)}"
+    Name = "${var.env}-private-subnet-${element(split(",", module.az.list_all), count.index)}"
   }
 }
 
@@ -124,7 +124,7 @@ resource "aws_route_table" "private" {
   count  = "${module.az.az_count}"
 
   tags {
-    Name = "${var.name}-private-${element(split(",", module.az.list_all), count.index)}"
+    Name = "${var.env}-private-${element(split(",", module.az.list_all), count.index)}"
   }
 }
 
@@ -156,7 +156,7 @@ resource "aws_route_table" "public" {
   }
 
   tags {
-    Name = "${var.name}-public"
+    Name = "${var.env}-public"
   }
 }
 
