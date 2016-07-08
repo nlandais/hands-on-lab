@@ -1,0 +1,18 @@
+---
+# vars file for ntp
+config:
+   AnnounceFlags:
+     data: 5
+   MaxPosPhaseCorrection:
+     data: 708
+   MaxNegPhaseCorrection:
+     data: 708
+
+TimeProviders:
+  NtpServer:
+    name: Enabled
+    data: 1
+  NtpClient:
+    name: SpecialPollInterval
+    data: 900
+

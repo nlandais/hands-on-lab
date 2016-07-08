@@ -1,0 +1,36 @@
+---  
+- name: Start time service
+  win_service: 
+     name: W32Time
+     start_mode: auto
+     enabled: yes
+     state: restarted
+
+- name: Update time service configuration
+  raw: w32tm /config /update /manualpeerlist:"{{ NTPserver }}"
+
+- name: Update registry - W32Time\config
+  win_regedit:
+    key: HKLM:\SYSTEM\CurrentControlSet\services\W32Time\config
+    value: "{{ item.key }}"
+    data: "{{ item.value.data }}"
+    datatype: dword
+  with_dict: "{{ config }}"
+
+- name: Update registry - W32Time\TimeProviders
+  win_regedit:
+    key: HKLM:\SYSTEM\CurrentControlSet\services\W32Time\TimeProviders\{{ item.key }}
+    value: "{{ item.value.name }}"
+    data: "{{ item.value.data }}"
+    datatype: dword
+  with_dict: "{{ TimeProviders }}"
+
+- name: Start time service
+  win_service: 
+     name: W32Time
+     start_mode: auto
+     enabled: yes
+     state: restarted
+
+- name: Sync the localhost clock with NTP server
+  raw: w32tm /resync 

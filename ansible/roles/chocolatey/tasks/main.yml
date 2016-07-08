@@ -1,0 +1,12 @@
+---
+- name: Get Choco installer
+  win_get_url:
+    url: 'https://chocolatey.org/install.ps1'
+    dest: '{{ download_dir }}\\install.ps1'
+
+- name: Install Chocolatey
+    raw: "@powershell {{ download_dir }}\\install.ps1"
+
+- name: Add chocolatey to the PATH
+    raw: "SET PATH=%PATH%;%ALLUSERSPROFILE%\\chocolatey\bin"
+

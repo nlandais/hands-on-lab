@@ -1,0 +1,9 @@
+---
+- name: Set folder access
+  win_acl:
+    path: "{{ dir }}"
+    user: "{{ item.key }}"
+    rights: "{{ item.value.rights }}"
+    type: allow
+    state: present
+  with_dict: "{{ folder_permissions }}"

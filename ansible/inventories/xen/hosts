@@ -1,0 +1,5 @@
+[FRA_Public_Pool_A]
+10.38.49.37
+
+[xen:children]
+FRA_Public_Pool_A

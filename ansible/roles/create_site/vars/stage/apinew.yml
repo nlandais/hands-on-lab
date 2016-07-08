@@ -1,0 +1,13 @@
+---
+siteName: apinew
+version: v4.0
+pipelineMode: Integrated
+poolName: apinew
+path: "c:\\inetpub\\wwwroot\\apinew"
+http_binding_port: 801
+https_binding_port: 4431
+loopback_binding: true
+webapp_name: 'sf'
+webapp_poolName: 'apiv3new'
+webapp_path: "c:\\inetpub\\wwwroot\\apiv3new"
+cookie_timeout: 975

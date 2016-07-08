@@ -1,0 +1,13 @@
+---
+search_ami_owner: "225285538696"
+sf_win_base_ami_name: SF-Template-2012-Ansible
+security_groups: ["default"]
+iam_role: "Ansible-node"
+subnet_id: "subnet-df0b4aa9"
+vpc_name: "Test-ShareFile"
+windows_security_groups: ["default", "ShareFile-Management-Windows"]
+instance_type: t2.large
+config_folder: "US_STAGING"
+security_group_ids: "sg-60fa7d07"
+asg_iam_role: "sfapplication_test"
+linux_security_groups: ["default", "ShareFile-Management-Linux"]

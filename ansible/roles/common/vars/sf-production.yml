@@ -1,0 +1,16 @@
+---
+search_ami_owner: "451493238755"
+sf_win_base_ami_name: SF-Template-2012-Ansible
+security_groups: ["default"]
+iam_role: "Ansible-node"
+subnet_id: subnet-dfeabfe2
+vpc_name: "Production-ShareFile"
+windows_security_groups: ["default", "ShareFile-Management-Windows"]
+instance_type: c4.4xlarge
+config_folder: "IAD"
+security_group_ids: ["sg-b1b0b9c9", "sg-32b5bc4a"]
+asg_iam_role: "sfapplication_production"
+elb_security_groups: [ "sg-4d1e4729", "sg-48fba62d" ]
+elb_subnets: [ "subnet-6ea15637", "subnet-2ead7859" ]
+ssl_cert: arn:aws:iam::451493238755:server-certificate/star.sharefile.com-20170308
+linux_security_groups: ["default", "ShareFile-Management-Linux"]

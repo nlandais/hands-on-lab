@@ -1,0 +1,6 @@
+#AMS Vars
+---
+ntp_service_name: ntpd
+ntp_config_driftfile: /var/lib/ntp/drift
+ip_list: ['10.33.41.39','10.33.41.23','10.33.41.34']
+time_server: "auth1.ams.expertcity.com"

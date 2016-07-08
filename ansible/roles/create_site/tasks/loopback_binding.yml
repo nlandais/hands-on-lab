@@ -1,0 +1,21 @@
+---
+- name: Set site bindings on loopback address (http)
+  win_iis_webbinding:
+    name: "{{ siteName }}"
+    protocol: "http"
+    IP: "127.0.0.1"
+    port: "{{ item }}"
+    state: present
+  with_items: 
+      - "{{ http_binding_port }}"
+
+- name: Set site bindings on loopback address (https)
+  win_iis_webbinding:
+    name: "{{ siteName }}"
+    protocol: "https"
+    IP: "127.0.0.1"
+    port: "{{ item }}"
+    state: present
+    certificate_hash: '{{ certificate_hash }}'
+  with_items: 
+      - "{{ https_binding_port }}"

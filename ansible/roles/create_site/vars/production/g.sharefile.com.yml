@@ -1,0 +1,13 @@
+---
+siteName: g.sharefile.com
+version: v4.0
+pipelineMode: Integrated
+poolName: g.sharefile.com
+path: "c:\\inetpub\\wwwroot\\sf-api"
+http_binding_port: 9113
+https_binding_port: 9013
+loopback_binding: false
+webapp_name: 'sf'
+webapp_poolName: 'g.sharefile.com-v3'
+webapp_path: "c:\\inetpub\\wwwroot\\apiv3"
+cookie_timeout: 975

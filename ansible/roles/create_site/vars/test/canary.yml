@@ -1,0 +1,10 @@
+---
+siteName: canary
+version: v4.0
+pipelineMode: Integrated
+poolName: canary-api
+path: "c:\\inetpub\\wwwroot\\canary"
+http_binding_port: 9112
+https_binding_port: 9012
+loopback_binding: false
+cookie_timeout: 20

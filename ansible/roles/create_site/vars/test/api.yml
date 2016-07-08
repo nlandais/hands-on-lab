@@ -1,0 +1,13 @@
+---
+siteName: api
+version: v4.0
+pipelineMode: Classic
+poolName: api
+path: "c:\\inetpub\\wwwroot\\sf-api"
+http_binding_port: 802
+https_binding_port: 4432
+loopback_binding: true
+webapp_name: 'sf'
+webapp_poolName: 'apiv3'
+webapp_path: "c:\\inetpub\\wwwroot\\apiv3"
+cookie_timeout: 975

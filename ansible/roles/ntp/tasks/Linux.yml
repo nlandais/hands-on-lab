@@ -1,0 +1,22 @@
+---
+- include_vars: "{{ site }}.yml"
+
+- name: Install the required packages in Redhat derivatives
+  yum: name=ntp state={{ ntp_pkg_state }}
+  when: Ansible_os_family == 'RedHat'
+  tags: [ 'package', 'ntp' ]
+
+- name: Install the required packages in Debian derivatives
+  apt: name=ntp state={{ ntp_pkg_state }}
+  when: Ansible_os_family == 'Debian'
+  tags: [ 'package', 'ntp' ]
+
+- name: Copy the ntp.conf template file
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify:
+  - restart ntp
+  tags: [ 'configuration', 'package', 'ntp' ]
+
+- name: Start/stop ntp service
+  service: name={{ ntp_service_name }} state={{ ntp_service_state }} enabled={{ ntp_service_enabled }} pattern='/ntpd'
+  tags: [ 'service', 'ntp' ]

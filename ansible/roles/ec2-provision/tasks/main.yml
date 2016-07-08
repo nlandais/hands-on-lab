@@ -1,0 +1,40 @@
+---
+- include: "{{ platform }}.yml"
+# New instances
+- set_fact:
+    instance_ip: "{{ item.private_ip }}"
+    newinstanceid: "{{ item.id }}"
+    nametag: "{{ tag }}"
+    vm_region: "{{ item.region }}"
+  with_items: "{{ vm.instances }}"
+
+# Existing instances
+- set_fact:
+    instance_ip: "{{ item.private_ip }}"
+    newinstanceid: "{{ item.id }}"
+    nametag: "{{ tag }}"
+    vm_region: "{{ item.region }}"
+  with_items: "{{ vm.tagged_instances }}"
+
+- name: allocate a new elastic IP and associate it with the instance just created
+  ec2_eip:
+    region: "{{ region }}"
+    instance_id: "{{ newinstanceid }}"
+    reuse_existing_ip_allowed: yes
+    in_vpc: true
+  when: assign_eip is defined
+
+# Refresh AWS inventory
+- name: Refresh the ec2 inventory cache
+  shell: "./hosts --refresh-cache"
+  when: vm.changed
+
+- meta: refresh_inventory
+
+- add_host:
+    hostname: "{{ instance_ip }}"
+    groups: "{{ group }}"
+    instance_id: "{{ newinstanceid }}"
+    region: "{{ region }}"
+    tag: "{{ tag }}"
+    Ansible_ssh_private_key_file: "/home/ec2-user/.ssh/{{ target_environment}}_sharefile_{{ region }}.pem"

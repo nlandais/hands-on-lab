@@ -1,0 +1,38 @@
+---
+# tasks file for create_users
+- name: Disable Guest access
+  win_user:
+    name: Guest
+    user_cannot_change_password: yes
+    password_never_expires: yes
+    account_disabled: yes
+
+- name: Create mail user
+  win_user:
+    name: mail
+    fullname: "Sharefile Notifications"
+    description: "This account is used to send emails from an account that can be replied to."
+    user_cannot_change_password: yes
+    password_never_expires: yes
+    groups: ["Users"]
+    password: "{{ mail_user }}"
+
+- name: Create noreply user
+  win_user:
+    name: noreply
+    fullname: "Sharefile Notifications"
+    description: "This account is used to send emails."
+    user_cannot_change_password: yes
+    password_never_expires: yes
+    groups: ["Users"]
+    password: '{{ noreply_user }}'
+
+- name: Create sharefile user
+  win_user:
+    name: sharefile
+    fullname: "Sharefile"
+    description: "Sharefile user"
+    user_cannot_change_password: yes
+    password_never_expires: yes
+    groups: ["Users", "IIS_IUSRS", "Performance Log Users", "Performance Monitor Users"]
+    password: "{{ sharefile_user }}"

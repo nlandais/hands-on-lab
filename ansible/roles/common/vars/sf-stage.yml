@@ -1,0 +1,17 @@
+---
+search_ami_owner: "072138786752"
+sf_win_base_ami_name: SF-Template-2012-Ansible
+security_groups: ["default"]
+iam_role: "Ansible-node"
+subnet_id: "subnet-43e1a435"
+vpc_name: "Stage-ShareFile"
+windows_security_groups: ["default", "ShareFile-Management-Windows"]
+instance_type: c4.4xlarge
+config_folder: "US_STAGING"
+security_group_ids: ["sg-48fba62d", ]
+asg_iam_role: "sfapplication_stage"
+elb_security_groups: [ "sg-4bc0f833", "sg-d3c0f8ab" ]
+# IDs for ShareFile-Control1 and & 2 (us-east-1a & b)
+elb_subnets: [ "subnet-43e1a435", "subnet-73b82a2b" ]
+linux_security_groups: ["default", "ShareFile-Management-Linux"]
+ssl_cert: arn:aws:iam::451493238755:server-certificate/star-sharefile-staging-20170314

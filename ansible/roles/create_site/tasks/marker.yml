@@ -1,0 +1,5 @@
+---
+- name: Create server.txt file
+  win_template:
+    src: roles/create_site/templates/server.txt.j2
+    dest: "{{ marker_path }}\\server.txt"

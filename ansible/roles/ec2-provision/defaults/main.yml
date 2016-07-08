@@ -1,0 +1,7 @@
+---
+instance_profile_name: Ansible-node
+user_data: "#!/bin/bash\nsed -i -e 's/^Defaults.*requiretty/# Defaults requiretty/g' /etc/sudoers"
+second_volume_size: 1024
+volume_type: gp2
+linux_volume_size: 8
+windows_volume_size: 80

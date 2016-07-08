@@ -1,0 +1,33 @@
+---
+- name: Disable the windows firewall
+  raw: 'netsh advfirewall set allprofiles state off'
+
+# Fails with newest release
+# - name: Install Windows updates
+#   win_updates:
+#      category_names: [ 'SecurityUpdates', 'CriticalUpdates', 'UpdateRollups' ]
+
+- name: Install the Multipath I/O feature
+  win_feature:
+     name: Multipath-IO
+     include_sub_features: yes
+     state: present
+
+- name: Disable Automatic PageFile Size management
+  raw: wmic.exe computersystem set AutomaticManagedPagefile=False
+
+- name: Set PageFile settings
+  raw: wmic.exe pagefileset set "Initialsize='{{ PgFileInitSize}}',MaximumSize='{{ PgFileMaxSize }}'"
+
+- name: Create folders under inetpub
+  win_file: path='C:\inetpub\{{ item }}' state=directory
+  with_items:
+    - 'mailroot'
+    - 'logs\LogFiles'
+
+- name: Install VC++ redist
+  win_chocolatey:
+    name: vcredist2012
+    state: present
+    upgrage: yes
+  ignore_errors: yes

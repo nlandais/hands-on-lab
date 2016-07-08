@@ -1,0 +1,25 @@
+---
+- name: Load default variables
+  include_vars: ./roles/common/vars/defaults.yml
+
+- name: Load default variables
+  include_vars: ./roles/common/vars/sf-{{ target_environment }}.yml
+
+- name: Get vpc id
+  ec2_vpc_net_facts:
+    region: "{{ region }}"
+    filters:
+      "tag:Name": "{{ vpc_name }}"
+  register: vpc_details
+
+- name: register vpc id
+  set_fact: vpc_id="{{ vpc_details.vpcs[0].id }}"
+
+- name: Get subnet ids
+  ec2_vpc_subnet_facts:
+    region: "{{ region }}"
+    filters:
+      vpc-id: "{{ vpc_id }}"
+  register: vpc_list
+
+- debug: msg="{{ vpc_list }}"

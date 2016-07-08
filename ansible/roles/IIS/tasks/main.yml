@@ -1,0 +1,69 @@
+---
+# tasks file for IIS
+- name: Install IIS
+  win_feature:
+    name: "Web-Server"
+    state: present
+    include_sub_features: yes
+    include_management_tools: yes
+    restart: no
+
+- name: Stop IIS so configs can be copied
+  win_service:
+    name: "{{ item }}"
+    state: stopped
+  with_items:
+    - "w3svc"
+    - "smtpsvc"
+    - "nntpsvc"
+    - "msftpsvc"
+    - "iisadmin"
+  ignore_errors: yes
+
+- name: Wait for the IIS service to release lock on config files
+  pause: seconds=30
+
+- name: Copy configs
+  win_template:
+    src: '{{ item }}'
+    dest: 'c:\Windows\System32\inetsrv\config\{{ item }}'
+  with_items:
+    - iisConfigurationKey.xml
+    - iisWasKey.xml
+
+- name: Install modules
+  win_chocolatey:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - webpicmd
+  ignore_errors: true
+
+- name: Download Application Request Routing and Advanced logging packages
+  win_webpicmd:
+    name: "{{ item }}"
+  with_items: 
+    - ARR
+    - AdvancedLogging
+
+- name: Import configs
+  raw: 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_regiis -pi "{{ item | splitext }}[0]" "C:\Windows\System32\inetsrv\config\{{item}}"'
+  with_items:
+    - iisConfigurationKey.xml
+    - iisWasKey.xml
+
+- name: Set custom errors
+  script: WebConfiguration.ps1
+
+- name: Remove Default site folder
+  win_file: path="c:\inetpub\wwwroot\Default site" state=absent
+
+- name: Remove default web site
+  win_iis_website:
+    name: "Default Web Site"
+    state: absent
+
+- name: Restart the World Wide Web Publishing Service
+  win_service:
+    name: w3svc
+    state: restarted

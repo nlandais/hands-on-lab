@@ -1,0 +1,10 @@
+---
+siteName: coffee-stage
+version: v4.0
+pipelineMode: Classic
+poolName: coffee-stage
+path: "c:\\inetpub\\wwwroot\\coffee"
+http_binding_port: 80
+https_binding_port: 443
+loopback_binding: true
+cookie_timeout: 1080

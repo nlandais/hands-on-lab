@@ -1,0 +1,10 @@
+---
+siteName: mainappnew-aws
+version: v4.0
+pipelineMode: Integrated
+poolName: mainappnew-aws
+path: "c:\\inetpub\\wwwroot\\mainappnew"
+http_binding_port: 801
+https_binding_port: 4431
+loopback_binding: true
+cookie_timeout: 1080

@@ -1,0 +1,13 @@
+[logstash]
+52.70.235.131
+52.86.162.69
+
+[centos:children]
+logstash
+
+[centos:vars]
+location="Test"
+Ansible_ssh_user=ec2-user
+sf_environment="test"
+
+

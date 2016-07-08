@@ -1,0 +1,14 @@
+[util]
+sfutil[1:10]-ams.prod.sharefile.com
+
+[web]
+sfweb[1:5]-ams.prod.sharefile.com
+
+[win_colo:children]
+util
+web
+
+[win_colo:vars]
+location="AMS"
+sf_environment="production"
+

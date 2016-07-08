@@ -1,0 +1,14 @@
+[util]
+sfutil[5:14]-fra.prod.sharefile.com
+
+[web]
+sfweb[4:8]-fra.prod.sharefile.com
+
+[win_colo:children]
+util
+web
+
+[win_colo:vars]
+location="FRA"
+sf_environment="production"
+

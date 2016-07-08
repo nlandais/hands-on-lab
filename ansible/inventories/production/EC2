@@ -1,0 +1,13 @@
+[logstash]
+10.39.105.25
+10.39.105.89
+10.39.105.88
+10.39.105.163
+10.39.105.165
+10.39.105.166
+
+[logstash:vars]
+location="AWS"
+Ansible_ssh_user=ec2-user
+Ansible_ssh_private_key_file=~/AWS/pk-lipson.txt
+sf_environment="production"

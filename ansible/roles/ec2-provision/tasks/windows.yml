@@ -1,0 +1,61 @@
+---
+- name: Find AMI
+  ec2_ami_find:
+    ami_tags:
+      Name: "{{ sf_win_base_ami_name }}"
+    owner: "{{ sf_ami_owner }}"
+    sort: name
+    sort_order: descending
+    sort_end: 1
+    region: "{{ region }}"
+  register: ami_search
+
+- name: Launch instance in AWS from a base AMI
+  ec2:
+    region: "{{ region }}"
+    key_name: "{{ key_name }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ ami_search.results[0].ami_id }}"
+    wait: yes
+    exact_count: 1
+    count_tag:
+      Name: "{{ tag }}"
+    vpc_subnet_id: "{{ subnet_id }}"
+    assign_public_ip: yes
+    group: "{{ windows_security_groups }}"
+    wait: yes
+    instance_profile_name: "{{ instance_profile_name }}"
+    instance_tags:
+        Name: "{{ tag }}"
+        Env: "{{ target_environment }}"
+        Owner: "{{ sf_ami_owner }}"
+    volumes:
+      - device_name: "/dev/sda1"
+        volume_type: "{{ volume_type }}"
+        volume_size: "{{ windows_volume_size }}"
+  register: vm
+
+- name: Create Volume and attach to instance
+  ec2_vol:
+    instance: "{{ vm.instance_ids }}"
+    volume_size: "{{ second_volume_size }}"
+    region: "{{ region }}"
+    device_name: /dev/xvdf
+#    delete_on_termination: yes
+  when: create_d_drive is defined
+  register: ec2_vol
+
+- debug: var=ec2_vol
+
+- name: Wait for the instance to boot and accept connection
+  pause: minutes=7
+  when: vm.changed
+
+- name: Test connection on port 5986
+  wait_for:
+    state: started
+    host: "{{ vm.instances[0].private_ip }}"
+    port: 5986
+  when: "{{ vm.instances }}"
+
+- set_fact: group=windows

@@ -1,0 +1,95 @@
+- hosts: localhost
+  become: no
+  connection: local
+  gather_facts: yes
+  vars_files:
+    - "roles/common/vars/{{ Ansible_distribution }}.yml"
+  vars:
+    ec2_extra_modules: [ 'ec2_vpc_net_facts',
+                        'ec2_vpc_subnet_facts',
+                        'ec2_eni_facts',
+                        'ec2_elb_facts',
+                        'dynamodb_table',
+                        'sqs_queue',
+                        'ec2_remote_facts'
+                      ]
+
+    ctx_win_modules: [ 'win_iis_webbinding',
+                       'win_join_domain',
+                       'win_iis_webapppool',
+                       'win_s3'
+                      ]
+
+    ctx_py_modules: [ 'lambda' ]
+
+    win_modules: [ 'win_webpicmd',
+                    'win_updates',
+                    'win_unzip',
+                    'win_chocolatey',
+                    'win_regedit',
+                    'win_iis_website',
+                    'win_scheduled_task',
+                    'win_environment',
+                    'win_acl',
+                    'win_share',
+                    'win_package'
+                  ]
+  pre_tasks:
+    - name: Create library directory
+      file: path="{{ lookup('env','HOME') }}/Ansible/library" state=directory
+
+    - name: Download extra EC2 python modules
+      get_url:
+        url: "https://raw.githubusercontent.com/Ansible/Ansible-modules-extras/devel/cloud/amazon/{{ item }}.py"
+        dest: "{{ inventory_dir }}/library/{{ item }}.py"
+        force: yes
+      with_items:
+        - '{{ ec2_extra_modules }}'
+
+    - name: Download the npm module
+      get_url:
+        url: "https://raw.githubusercontent.com/Ansible/Ansible-modules-extras/devel/packaging/language/npm.py"
+        dest: "{{ inventory_dir }}/library/npm.py"
+        force: yes
+
+    - name: (Temporary) - Download fix for S3 module
+      get_url:
+        url: "https://raw.githubusercontent.com/dougluce/Ansible-modules-core/ec0f2113e05fd4435816189d8c7da9c8d5d4d42c/cloud/amazon/s3.py"
+        dest: "{{ inventory_dir }}/library/s3.py"
+        force: yes
+
+    - name: Python module for ec2 ip address management
+      get_url:
+        url: "https://raw.githubusercontent.com/Etherdaemon/Ansible-modules-extras/b944686796cad8351efa5e4dbb3de1fd5c9cd530/cloud/amazon/ec2_addresses.py"
+        dest: "{{ inventory_dir }}/library/ec2_addresses.py"
+        force: yes
+
+    #Download extra modules from private repo (pending PR)
+    - name: Download private windows modules
+      get_url:
+        url: https://raw.githubusercontent.com/nlandais/Ansible-modules-ctxs/master/{{ item[0] }}.{{ item[1] }}
+        dest: "{{ inventory_dir }}/library/{{ item[0] }}.{{ item[1] }}"
+        force: yes
+      with_nested:
+        - '{{ ctx_win_modules }}'
+        - [ 'ps1', 'py' ]
+
+    - name: Download private python modules
+      get_url:
+        url: https://raw.githubusercontent.com/nlandais/Ansible-modules-ctxs/master/{{ item }}.py
+        dest: "{{ inventory_dir }}/library/{{ item }}.py"
+        force: yes
+      with_items:
+        - '{{ ctx_py_modules }}'
+
+    - name: Download windows extra modules
+      get_url:
+        url: https://raw.githubusercontent.com/Ansible/Ansible-modules-extras/devel/windows/{{ item[0] }}.{{ item[1] }}
+        dest: "{{ inventory_dir }}/library/{{ item[0] }}.{{ item[1] }}"
+        force: yes
+      with_nested:
+        - '{{ win_modules }}'
+        - [ 'ps1', 'py' ]
+
+  roles:
+    - { role: linux-base, become: yes }

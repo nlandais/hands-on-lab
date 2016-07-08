@@ -1,0 +1,48 @@
+---
+- name: Find AMI
+  ec2_ami_find:
+    name: "{{ AWS_Linux_base_ami_name }}"
+    owner: "{{ AWS_Linux_ami_owner }}"
+    sort: name
+    sort_order: descending
+    sort_end: 1
+    region: "{{ region }}"
+  register: ami_search
+
+- name: Launch instance in AWS from a base AMI
+  ec2:
+    region: "{{ region }}"
+    key_name: "{{ key_name }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ ami_search.results[0].ami_id }}"
+    wait: yes
+    exact_count: 1
+    count_tag:
+      Name: "{{ tag }}"
+    vpc_subnet_id: "{{ subnet_id }}"
+    assign_public_ip: yes
+    group: "{{ linux_security_groups }}"
+    wait: yes
+    instance_profile_name: "{{ instance_profile_name }}"
+    user_data: "{{ user_data }}"
+    instance_tags:
+        Name: "{{ tag }}"
+        Env: "{{ target_environment }}"
+    volumes:
+      - device_name: /dev/xvda
+        volume_type: "{{ volume_type }}"
+        volume_size: "{{ linux_volume_size }}"
+  register: vm
+
+- debug: var=vm
+
+- set_fact: group=linux
+
+- name: Test connection on port 22
+  wait_for:
+    state: started
+    host: "{{ vm.instances[0].private_ip }}"
+    port: 22
+    delay: 30
+    timeout: 320
+  when: "{{ vm.changed }}"

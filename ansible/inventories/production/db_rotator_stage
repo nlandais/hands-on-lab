@@ -1,0 +1,15 @@
+[www]
+sfwww1-iad.prod.sharefile.com
+
+[sfi-api:children]
+www
+
+[sharefilemarketing:children]
+www
+
+[win_colo:children]
+www
+
+[win_colo:vars]
+location="IAD"
+sf_environment="production"
