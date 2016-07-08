@@ -3,7 +3,7 @@
   connection: local
   gather_facts: yes
   vars_files:
-    - "roles/common/vars/{{ Ansible_distribution }}.yml"
+    - "roles/common/vars/{{ ansible_distribution }}.yml"
   vars:
     ec2_extra_modules: [ 'ec2_vpc_net_facts',
                         'ec2_vpc_subnet_facts',
@@ -36,7 +36,7 @@
                   ]
   pre_tasks:
     - name: Create library directory
-      file: path="{{ lookup('env','HOME') }}/Ansible/library" state=directory
+      file: path="{{ inventory_dir }}/library" state=directory
 
     - name: Download extra EC2 python modules
       get_url:
@@ -90,6 +90,3 @@
       with_nested:
         - '{{ win_modules }}'
         - [ 'ps1', 'py' ]
-
-  roles:
-    - { role: linux-base, become: yes }

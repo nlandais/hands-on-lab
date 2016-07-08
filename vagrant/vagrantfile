@@ -6,7 +6,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
-require 'vars.rb'
+require './vars.rb'
 include MyVars
 KEY = File.basename(KEYPATH, ".pem")
 
@@ -31,7 +31,7 @@ Vagrant.configure(2) do |config|
     aws.keypair_name = KEY
     aws.security_groups= SG
     aws.subnet_id = SUBNET_ID
-    aws.ami = "ami-b80d1ad2"
+    aws.ami = "ami-2a69aa47"
     aws.region = "us-east-1"
     override.ssh.username = "ec2-user"
     override.ssh.private_key_path = KEYPATH
@@ -45,8 +45,7 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder PLAYBOOKSPATH, "#{HOME_DIRECTORY}/Ansible", type: "rsync", rsync__exclude: [".git/", "group_vars/", "library/", "log/"]
-  config.vm.synced_folder ACCOUNTKEYS, "#{HOME_DIRECTORY}/.ssh", type: "rsync"
+  config.vm.synced_folder PLAYBOOKSPATH, "#{HOME_DIRECTORY}/ansible", type: "rsync", rsync__exclude: [".git/", "group_vars/", "library/", "log/"]
 
   # View the documentation for the provider you are using for more
   # information on available options.

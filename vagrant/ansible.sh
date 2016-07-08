@@ -44,11 +44,11 @@ aws_access_key_id = $1
 aws_secret_access_key = $2
 EOF
 
-if [ ! -d $HOME/Ansible/group_vars ]; then
-  mkdir -p $HOME/Ansible/group_vars
+if [ ! -d $HOME/ansible/group_vars ]; then
+  mkdir -p $HOME/ansible/group_vars
 fi
 
-cat > $HOME/Ansible/group_vars/windows.yml <<EOF
+cat > $HOME/ansible/group_vars/windows.yml <<EOF
 ansible_port: 5986
 ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
@@ -60,13 +60,9 @@ secret_key: $2
 EOF
 
 #This path must match the value of log_path in ansible.config
-if [ ! -d $HOME/Ansible/log ]; then
-  mkdir -p $HOME/Ansible/log
+if [ ! -d $HOME/ansible/log ]; then
+  mkdir -p $HOME/ansible/log
 fi
-
-#Install extra modules
-cd $HOME/Ansible
-ansible-playbook -i hosts localhost.yml
 
 if [ ! -d $HOME/.ssh ]; then
   mkdir -p $HOME/.ssh
@@ -77,4 +73,3 @@ for file in $( ls -d -1 $HOME/.ssh/* )
 do
   chmod 0400 ${file}
 done
-fi
