@@ -60,7 +60,6 @@ resource "aws_vpc" "main" {
 
   lifecycle {
     create_before_destroy = true
-    prevent_destroy       = true
   }
 
   tags {
@@ -101,7 +100,6 @@ resource "aws_subnet" "public" {
 
   lifecycle {
     create_before_destroy = true
-    prevent_destroy       = true
   }
 
   tags {
@@ -119,7 +117,6 @@ resource "aws_subnet" "private" {
 
   lifecycle {
     create_before_destroy = true
-    prevent_destroy       = true
   }
 
 
