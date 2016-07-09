@@ -30,18 +30,26 @@ variable "region" {
   default = "us-east-1"
 }
 
+
 variable "subnet_bits" {
   # https://www.terraform.io/docs/configuration/interpolation.html#cidrsubnet_iprange_newbits_netnum_
   description = "number of bits to on top of the {public,private}_cidr_base. 2^{subnet_bits} must be larger than az_count."
   default = 3
 }
 
+# HACK: needed until terraform 0.7 is out
+# https://github.com/hashicorp/terraform/pull/6598 ->
+# https://github.com/hashicorp/terraform/issues/4169 ->
+# https://github.com/hashicorp/terraform/issues/3888
+variable "az_count" {
+  description = "number of zones in the region to distribute over"
+  default = 3
+}
 
-# the modules we need
 module "az" {
   source  = "../aws_region"
-  region  = "${var.region}"
-  account = "default"
+
+  region = "${var.region}"
 }
 
 # here come the resources
@@ -62,8 +70,13 @@ resource "aws_vpc" "main" {
 
 
 # allow us to address hosts by short names. Neato.
+resource "aws_route53_zone" "apex" {
+  name = "${var.dnsbase}"
+  vpc_id = "${aws_vpc.main.id}"
+}
+
 resource "aws_vpc_dhcp_options" "main_opts" {
-  domain_name = "${module.meta.host_domain}"
+  domain_name = "${var.dnsbase}"
   domain_name_servers = ["AmazonProvidedDNS"]
   tags {
     Name = "${var.env}-dhcp-opts"
@@ -83,7 +96,7 @@ resource "aws_subnet" "public" {
   cidr_block              = "${cidrsubnet(var.public_cidr_base, var.subnet_bits, count.index)}"
   # create a public subnet for each zone
   availability_zone       = "${element(split(",", module.az.list_all), count.index)}"
-  count                   = "${module.az.az_count}"
+  count                   = "${var.az_count}"
   map_public_ip_on_launch = true
 
   lifecycle {
@@ -101,7 +114,7 @@ resource "aws_subnet" "private" {
   cidr_block          = "${cidrsubnet(var.private_cidr_base, var.subnet_bits, count.index)}"
   # create a private subnet for each zone
   availability_zone   = "${element(split(",", module.az.list_all), count.index)}"
-  count               = "${module.az.az_count}"
+  count               = "${var.az_count}"
 
 
   lifecycle {
@@ -121,7 +134,7 @@ resource "aws_subnet" "private" {
 # create a private route table for each zone. We need a table for each zone since NAT gateways are tied to zones.
 resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.main.id}"
-  count  = "${module.az.az_count}"
+  count  = "${var.az_count}"
 
   tags {
     Name = "${var.env}-private-${element(split(",", module.az.list_all), count.index)}"
@@ -133,7 +146,7 @@ resource "aws_route" "to_nat_gateway" {
   route_table_id         = "${element(aws_route_table.private.*.id, count.index)}"
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = "${element(aws_nat_gateway.nat.*.id, count.index)}"
-  count                  = "${module.az.az_count}"
+  count                  = "${var.az_count}"
 
   depends_on             = ["aws_route_table.private"]
 }
@@ -142,7 +155,7 @@ resource "aws_route" "to_nat_gateway" {
 resource "aws_route_table_association" "private" {
   subnet_id      = "${element(aws_subnet.private.*.id, count.index)}"
   route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
-  count          = "${module.az.az_count}"
+  count          = "${var.az_count}"
 }
 
 # create the route table for the public network.
@@ -162,7 +175,7 @@ resource "aws_route_table" "public" {
 
 
 resource "aws_route_table_association" "public" {
-  count          = "${module.az.az_count}"
+  count          = "${var.az_count}"
   subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
@@ -178,24 +191,19 @@ resource "aws_internet_gateway" "igw" {
 # nat gateways - one pr zone. So data can flow _from_ the private network _to_ the Internet.
 resource "aws_eip" "nat" {
   vpc   = true
-  count = "${module.az.az_count}"
+  count = "${var.az_count}"
 }
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = "${element(aws_eip.nat.*.id, count.index)}"
   subnet_id     = "${element(aws_subnet.public.*.id, count.index)}"
-  count         = "${module.az.az_count}"
+  count         = "${var.az_count}"
 }
 
 resource "aws_vpc_endpoint" "s3endpoint" {
   vpc_id = "${aws_vpc.main.id}"
   route_table_ids = ["${aws_route_table.private.*.id}", "${aws_route_table.public.id}"]
   service_name = "com.amazonaws.${var.region}.s3"
-}
-
-resource "aws_route53_zone" "apex" {
-  name = "${var.dnsbase}"
-  vpc_id = "${var.vpc_id}"
 }
 
 # People consuming this module will need the Subnet IDs and the VPC id.
