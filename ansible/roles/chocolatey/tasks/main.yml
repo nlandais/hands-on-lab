@@ -5,8 +5,7 @@
     dest: '{{ download_dir }}\\install.ps1'
 
 - name: Install Chocolatey
-    raw: "@powershell {{ download_dir }}\\install.ps1"
+  raw: "{{ download_dir }}\\install.ps1"
 
 - name: Add chocolatey to the PATH
-    raw: "SET PATH=%PATH%;%ALLUSERSPROFILE%\\chocolatey\bin"
-
+  raw: "SET PATH=%PATH%;%ALLUSERSPROFILE%\\chocolatey\bin"

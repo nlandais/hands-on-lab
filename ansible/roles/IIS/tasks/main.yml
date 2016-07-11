@@ -8,29 +8,6 @@
     include_management_tools: yes
     restart: no
 
-- name: Stop IIS so configs can be copied
-  win_service:
-    name: "{{ item }}"
-    state: stopped
-  with_items:
-    - "w3svc"
-    - "smtpsvc"
-    - "nntpsvc"
-    - "msftpsvc"
-    - "iisadmin"
-  ignore_errors: yes
-
-- name: Wait for the IIS service to release lock on config files
-  pause: seconds=30
-
-- name: Copy configs
-  win_template:
-    src: '{{ item }}'
-    dest: 'c:\Windows\System32\inetsrv\config\{{ item }}'
-  with_items:
-    - iisConfigurationKey.xml
-    - iisWasKey.xml
-
 - name: Install modules
   win_chocolatey:
     name: '{{ item }}'
@@ -42,15 +19,9 @@
 - name: Download Application Request Routing and Advanced logging packages
   win_webpicmd:
     name: "{{ item }}"
-  with_items: 
+  with_items:
     - ARR
     - AdvancedLogging
-
-- name: Import configs
-  raw: 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_regiis -pi "{{ item | splitext }}[0]" "C:\Windows\System32\inetsrv\config\{{item}}"'
-  with_items:
-    - iisConfigurationKey.xml
-    - iisWasKey.xml
 
 - name: Set custom errors
   script: WebConfiguration.ps1

@@ -3,21 +3,15 @@
   gather_facts: no
   vars:
     inventory_tag: '{{ tag | regex_replace("\.", "_") }}'
-    setMachineKeys: yes
-  pre_tasks:
-    - include: roles/common/tasks/init.yml
-    - file: src='{{ playbook_dir }}/group_vars/windows.yml' state=link dest='{{ playbook_dir }}/group_vars/tag_Name_{{ inventory_tag }}.yml' force=yes
+  vars_files:
+    - './roles/common/vars/defaults.yml'
   roles:
     - ec2-provision
 
 - hosts: windows
   gather_facts: yes
   vars_files:
-    - './roles/common/vars/{{ location }}.yml'
     - './roles/common/vars/defaults.yml'
-    - './roles/create_site/vars/{{ target_environment }}/main.yml'
-    - './roles/splunk/vars/keys.yml'
-
   roles:
     - role: basic_config
     - { role: create_site, site: web }

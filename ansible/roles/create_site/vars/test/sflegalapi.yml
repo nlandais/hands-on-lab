@@ -1,8 +1,0 @@
----
-siteName: SFLegal
-version: ""
-pipelineMode: Integrated
-poolName: SFLegalApi
-path: "c:\\inetpub\\wwwroot\\sflegal\\approot"
-http_binding_port: 80
-cookie_timeout: 1080

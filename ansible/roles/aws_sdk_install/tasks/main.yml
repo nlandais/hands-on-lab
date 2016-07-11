@@ -1,5 +1,0 @@
----
-# tasks file for aws_sdk_install
-- name: Check if the AWS PoSh SDK is already installed
-  win_chocolatey: 
-    name: awstools.powershell

@@ -1,9 +1,9 @@
 ---
 - name: Add the OS specific variables
-  include_vars: '{{ Ansible_os_family }}.yml'
+  include_vars: '{{ ansible_os_family }}.yml'
 
 - include: Windows.yml
-  when: Ansible_os_family == 'Windows'
+  when: ansible_os_family == 'Windows'
 
 - include: Linux.yml
-  when: Ansible_os_family == 'RedHat' or Ansible_os_family == 'Debian'
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Debian'

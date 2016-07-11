@@ -1,6 +1,0 @@
-#FRA Vars
----
-ntp_service_name: ntpd
-ntp_config_driftfile: /var/lib/ntp/drift
-ip_list: ['10.38.49.34','10.38.49.33','10.38.49.45']
-time_server: "time1.fra.expertcity.com"

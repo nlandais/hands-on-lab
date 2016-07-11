@@ -1,14 +1,9 @@
 ---
-- include_vars: "{{ target_environment }}/{{ site }}.yml"
-
-- include: machineKeys.yml
-  when: setMachineKeys is defined
-
 - name: Create apppool
   win_iis_webapppool:
     name: "{{ item }}"
     state: started
-    attributes: "managedRuntimeVersion:{{ version }}|managedPipelineMode:{{ pipelineMode }}|queueLength:1000|processModel.identityType:SpecificUser|processModel.userName:sharefile|processModel.password:{{ sharefile_user }}|enable32BitAppOnWin64:true"
+    attributes: "managedRuntimeVersion:{{ version }}|managedPipelineMode:{{ pipelineMode }}|queueLength:1000|enable32BitAppOnWin64:true"
   with_items:
     - "{{ poolName }}"
     - "{{ webapp_poolName|default([]) }}"
@@ -27,7 +22,6 @@
     state: directory
   with_items:
     - "{{ path }}"
-    - "{{ webapp_path|default([]) }}"
 
 - name: Create directories under the site's root directory
   win_file:
@@ -35,43 +29,15 @@
     state: directory
   with_items:
     - logs
-    - styles
-
-- include: acl.yml dir="{{ path }}"
-- include: acl.yml dir="{{ webapp_path }}"
-  when: webapp_path is defined
-
-- include: marker.yml marker_path="{{ path }}" label="{{ poolName }}"
-
-- include: marker.yml marker_path="{{ path }}" label="{{ poolName }}"
-  when: webapp_poolName is defined
 
 - name: Create web site
   win_iis_website:
     name: "{{ siteName }}"
-    state: stopped
+    state: started
     ip: '*'
     application_pool: "{{ poolName }}"
     physical_path: "{{ path }}"
-    port: "{{ http_binding_port }}"
-
-- include: webapp.yml
-  when: webapp_name is defined
-
-- name: Set site bindings (ssl)
-  win_iis_webbinding:
-    name: "{{ siteName }}"
-    protocol: https
-    state: present
-    ip: '*'
-    port: "{{ https_binding_port }}"
-    certificate_hash: "{{ certificate_hash }}"
-    state: present
-    certificate_store_name: My
-  when: https_binding_port is defined
-
-- include: loopback_binding.yml
-  when: loopback_binding is defined
+    port: 80
 
 - name: start site
   win_iis_website:

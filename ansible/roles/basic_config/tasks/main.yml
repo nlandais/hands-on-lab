@@ -2,11 +2,6 @@
 - name: Disable the windows firewall
   raw: 'netsh advfirewall set allprofiles state off'
 
-# Fails with newest release
-# - name: Install Windows updates
-#   win_updates:
-#      category_names: [ 'SecurityUpdates', 'CriticalUpdates', 'UpdateRollups' ]
-
 - name: Install the Multipath I/O feature
   win_feature:
      name: Multipath-IO

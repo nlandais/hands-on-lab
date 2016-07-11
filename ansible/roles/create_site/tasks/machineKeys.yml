@@ -1,7 +1,0 @@
-- include_vars: "{{ target_environment }}/keys.yml"
-- name: Set IIS machine keys in web.config
-  win_lineinfile:
-    dest: "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\Config\\web.config"
-    state: present
-    insertbefore: "</system.web>"
-    line: '<machineKey decryption="AES" decryptionKey="{{ decryptionKey }}" validationKey="{{ validationKey }}" />'

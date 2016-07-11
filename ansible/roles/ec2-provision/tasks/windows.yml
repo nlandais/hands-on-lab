@@ -24,10 +24,9 @@
     assign_public_ip: yes
     group: "{{ windows_security_groups }}"
     wait: yes
-    instance_profile_name: "{{ instance_profile_name }}"
+    instance_profile_name: "{{ iam_role }}"
     instance_tags:
         Name: "{{ tag }}"
-        Env: "{{ target_environment }}"
         Owner: "{{ sf_ami_owner }}"
     volumes:
       - device_name: "/dev/sda1"
@@ -51,11 +50,11 @@
   pause: minutes=7
   when: vm.changed
 
-- name: Test connection on port 5986
-  wait_for:
-    state: started
-    host: "{{ vm.instances[0].private_ip }}"
-    port: 5986
-  when: "{{ vm.instances }}"
+# - name: Test connection on port 5986
+#   wait_for:
+#     state: started
+#     host: "{{ vm.instances[0].private_ip }}"
+#     port: 5986
+#   when: "{{ vm.instances }}"
 
 - set_fact: group=windows

@@ -1,16 +1,14 @@
 ---
-aws_module_path: "C:\\Program Files (x86)\\AWS Tools\\PowerShell\\AWSPowerShell\\AWSPowerShell.psd1"
-aws_sdk_url: "http://sdk-for-net.amazonwebservices.com/latest/AWSToolsAndSDKForNet.msi"
-AWS_Linux_ami_owner: 137112412989
-AWS_Linux_base_ami_name: amzn-ami-hvm-2015.09.1.x86_64-ebs
-owner: "451493238755"
-hipchat_room: 1619324
-hipchat_auth_token: a5d33c0e7e8e959e1c563af2a68d15
-NTPserver: "216.219.116.9"
 download_dir: "c:\\Users\\Public\\Downloads"
 region: us-east-1
 s3_bucket: sf-Ansible
 platform: windows
 remote_user: ec2-user
-key_name: "{{ target_environment }}_sharefile_{{ region }}"
-sf_ami_owner: "451493238755"
+key_name: "DevOps-lab"
+sf_ami_owner: "038989901093"
+search_ami_owner: "038989901093"
+sf_win_base_ami_name: windows-ami
+iam_role: "ansible-node"
+subnet_id: subnet-0b624c53
+windows_security_groups: ["lab", "default"]
+instance_type: c4.xlarge

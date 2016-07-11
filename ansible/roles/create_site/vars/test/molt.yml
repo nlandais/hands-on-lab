@@ -1,9 +1,0 @@
----
-siteName: molt
-version: v4.0
-pipelineMode: Integrated
-poolName: molt
-path: "c:\\inetpub\\wwwroot\\molt"
-http_binding_port: 802
-https_binding_port: 4432
-cookie_timeout: 1080

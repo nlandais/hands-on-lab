@@ -1,13 +1,13 @@
----  
+---
 - name: Start time service
-  win_service: 
+  win_service:
      name: W32Time
      start_mode: auto
      enabled: yes
      state: restarted
 
 - name: Update time service configuration
-  raw: w32tm /config /update /manualpeerlist:"{{ NTPserver }}"
+  raw: w32tm /config /update /manualpeerlist:"{{ ntp_config_server[0] }}"
 
 - name: Update registry - W32Time\config
   win_regedit:
@@ -26,11 +26,11 @@
   with_dict: "{{ TimeProviders }}"
 
 - name: Start time service
-  win_service: 
+  win_service:
      name: W32Time
      start_mode: auto
      enabled: yes
      state: restarted
 
 - name: Sync the localhost clock with NTP server
-  raw: w32tm /resync 
+  raw: w32tm /resync

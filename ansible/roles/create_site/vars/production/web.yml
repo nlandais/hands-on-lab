@@ -1,9 +1,0 @@
----
-siteName: web-production
-version: v4.0
-pipelineMode: Integrated
-poolName: webapp-aws
-path: "c:\\inetpub\\wwwroot\\webapp"
-http_binding_port: 8080
-https_binding_port: 4431
-cookie_timeout: 1080
