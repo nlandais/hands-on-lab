@@ -31,10 +31,11 @@ Vagrant.configure(2) do |config|
     aws.keypair_name = KEY
     aws.security_groups= SG
     aws.subnet_id = SUBNET_ID
-    aws.ami = "ami-2a69aa47"
+    aws.ami = "ami-6869aa05"
     aws.region = "us-east-1"
     override.ssh.username = "ec2-user"
     override.ssh.private_key_path = KEYPATH
+    aws.instance_type = "t2.micro"
     aws.tags = {
       'Name' => INSTANCE_NAME
     }
