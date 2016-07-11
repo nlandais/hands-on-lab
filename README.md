@@ -1,4 +1,14 @@
 # hands-on-lab
+
+### Goal
+
+The goal of this lab is to set up a webserver.
+
+The webserver is to fetch a "package" from the `ctxs-lab-content` S3
+bucket. The webserver needs to be publicly accessible for HTTP and
+RDP. To manage the webserver we will create an Ansible master. The
+ansible master needs be available for public SSH.
+
 ### Setting up a core Ansible server:
 Run the following commands
 
