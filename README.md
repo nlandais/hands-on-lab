@@ -74,4 +74,3 @@ Use these AMIs. (Terraform has them pre-loaded.)
                     US-EAST-1       US-WEST-1      US-WEST-2
     Ansible AMI     ami-923cbc85    ami-2589cf45   ami-8f68abef
     Webhost AMI     ami-9ce8688b    ami-4197d121   ami-e067a480
->>>>>>> document AMI map
