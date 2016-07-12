@@ -24,13 +24,6 @@
     in_vpc: true
   when: assign_eip is defined
 
-# Refresh AWS inventory
-- name: Refresh the ec2 inventory cache
-  shell: "./hosts --refresh-cache"
-  when: vm.changed
-
-- meta: refresh_inventory
-
 - add_host:
     hostname: "{{ instance_ip }}"
     groups: "{{ group }}"

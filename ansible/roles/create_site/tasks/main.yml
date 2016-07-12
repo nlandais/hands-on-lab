@@ -43,3 +43,17 @@
   win_iis_website:
     name: "{{ siteName }}"
     state: started
+
+- name: Fetch the package from S3
+  win_s3:
+    bucket: "{{ s3_bucket }}"
+    key: "{{ package }}"
+    method: download
+    overwrite: true
+    local: '{{ download_dir }}'
+
+- name: Unzip the release package
+  win_unzip:
+    src: '{{ download_dir }}\{{ package }}'
+    dest: '{{ path }}'
+    rm: true

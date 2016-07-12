@@ -1,7 +1,7 @@
 ---
 download_dir: "c:\\Users\\Public\\Downloads"
 region: us-east-1
-s3_bucket: sf-Ansible
+s3_bucket: ctxs-lab-content
 platform: windows
 remote_user: ec2-user
 key_name: "DevOps-lab"
@@ -12,3 +12,4 @@ iam_role: "ansible-node"
 subnet_id: subnet-0b624c53
 windows_security_groups: ["lab", "default"]
 instance_type: c4.xlarge
+region: us-east-1

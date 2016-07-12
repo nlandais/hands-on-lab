@@ -1,6 +1,2 @@
 ---
-folder_permissions:
-  sharefile:
-    rights: 'FullControl'
-  IUSR:
-    rights: "['Read','ExecuteFile','ListDirectory']"
+package: deployment_package.zip

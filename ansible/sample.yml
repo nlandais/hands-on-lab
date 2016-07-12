@@ -14,8 +14,8 @@
     - './roles/common/vars/defaults.yml'
   roles:
     - role: basic_config
-    - { role: create_site, site: web }
+    - { role: create_site }
 
 # See http://54.165.232.145/view/Deployment%20jobs/job/provision_instance/ to see how this playbook is called and used in the AWS environment
 # From the command prompt on the Ansible run:
-# Ansible-playbook webserver.yml -e 'target_environment=stage tag=webapp_release_16.5.1_107_stage_ami region=east location=AWS' --vault-password-file <path to vault key>
+# Ansible-playbook webserver.yml -e 'tag=samplewebapp region=us-east-1'
