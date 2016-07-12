@@ -10,28 +10,60 @@ RDP. To manage the webserver we will create an Ansible master. The
 ansible master needs be available for public SSH.
 
 ### Setting up a core Ansible server:
-Run the following commands
-
-+ `cd into the vagrant folders`
-+ `run vagrant up`
-
-If things blow up keep calm and check. Errors usually stem from vars.rb file. Otherwise, check your git status and revert any changes
-that may have inadvertently found their way into the vagrantfile
-Wait ... and wait some more ... Once the process finishes
+With this exercise, we'll be using Terraform to automatically spin up a pre-configured Ansible AMI to expedite to help us hit the ground running.
 
 ### Running your first playbook:
 So, let's run a playbook to configure the Ansible server.
 This is a very simple playbook meant to fetch files called modules from GitHub
 and place them in the library folder.
 
-`vagrant ssh`
+First connect to the Ansible server via SSH
 
-Now you are connected to the Ansible server
-+ `cd ansible`
+`ssh -i <path to DevOps-lab.pem> ec2-user@<public IP for the Ansible server>`
+
+Now that you are connected to the Ansible server
+
++ `cd ansible\library`
+
++ `rm -f *`
+
++ `cd ~/ansible`
+
 + `ansible-playbook localhost.yml`
+
+
 ... and voila, you just ran your first playbook
 
 #### **checking the results**:
 To visualize the changes resulting from running the playbook, while logged into the Ansible server run:
+
 + `cd ~/ansible/library`
+
 + `ls`
+
+### Provisioning a Windows instance to run a static website
+
+This goal of this excercise is to provision an instance from a template, install IIS and fetch a package from S3
+which contains the website assets. Playbooks run as part of this lab are very similar to the steps used to deploy
+the ShareFile webapp and api servers running in the AWS cloud.
+
+##### Step 1: Configuring the Ansible server to work in your VPC
+
++ `cd ~/ansible/roles/common/vars`
+
+Use your favorite text editor to edit defaults.yml, provide the values for your VPC to the variables
+subnet\_id, windows\_security\_groups and region
+
+##### Step 2: Deploying a simple static website
+
++ `cd ~/ansible`
+
++ `ansible-playbook sample.yml -e "tag=<tag to identify your webserver in the AWS console>"`
+
++ wait until the playbook completes, it will take a little while...
+
+If it all worked as expected, from your workstation, open your favorite web browser and enter the provisioned web server 
+public IP to browse the automatically deployed web site.
+
+
+
