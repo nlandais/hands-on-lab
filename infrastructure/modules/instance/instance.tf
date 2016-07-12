@@ -18,7 +18,7 @@ resource "aws_instance" "server" {
 
   # user data
   user_data = "${element(template_file.user_data.*.rendered, count.index)}"
-  key_name  = "admin"
+  key_name  = "${var.key_pair}"
   root_block_device {
     volume_type = "gp2"
     volume_size = "${var.vol_size}"

@@ -26,3 +26,30 @@ complex objects. Modules inputs can only be strings. All outputs is
 can only be strings. This can be a little limiting, but terraform has
 nice interpolation syntax to work around it
 (https://www.terraform.io/docs/configuration/interpolation.html).
+
+
+Working with Terraform
+----------------------
+On the first run of terraform (or when you add new modules) do :
+
+    terraform get
+
+This will cache the modules you need for terraform to find.
+
+Now you iterate on your infrastructure (`main.tf`). When you think
+it's ready do:
+
+    terraform plan
+
+This will give you a preview of the resources that is to be created, updated or
+deleted. It will also tell you about any syntax errors you may have
+and if all inputs are satisfied.
+
+Once you are feel confident that your changes are good to go do:
+
+    terraform apply
+
+This will put your changes into effect. It will also create
+`terraform.tfstate` and `terraform.tfstate.backup` files - ignore
+those, but don't delete them. You should now be able to see your
+infrastructure in the AWS console (make sure to choose the right region).

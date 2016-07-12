@@ -29,15 +29,14 @@ variable "r53_zone_id" {
 
 variable "policy" {
   description = "iam role"
+  # not good for prod. Needed for to simplify setup.
   default = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Action": [
-        "ec2:CreateTags",
-        "ec2:DeleteTags",
-        "ec2:DescribeTags"
+        "ec2:*"
       ],
       "Effect": "Allow",
       "Resource": "*"
@@ -47,6 +46,10 @@ variable "policy" {
 EOF
 }
 
+variable "key_pair" {
+  default = "DevOps-lab"
+  description = "AWS SSH key to inject"
+}
 
 variable "servers" {
   default = "1"
