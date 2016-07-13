@@ -16,6 +16,5 @@
     - role: basic_config
     - { role: create_site }
 
-# See http://54.165.232.145/view/Deployment%20jobs/job/provision_instance/ to see how this playbook is called and used in the AWS environment
-# From the command prompt on the Ansible run:
-# Ansible-playbook webserver.yml -e 'tag=samplewebapp region=us-east-1'
+# From the command prompt on the Ansible server run:
+# Ansible-playbook webserver.yml -e 'tag=samplewebapp'
