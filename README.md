@@ -67,6 +67,28 @@ If it all worked as expected, from your workstation, open your favorite web brow
 public IP to browse the automatically deployed web site.
 
 
+##### Step 3: Re-deploy
+To demonstrate the power of Ansible, let's put the machine in an 'unknown state' by deleting the folder where the website resides.
+
++ First RDP into the web server and delete the webapp folder under "c:\inetpub\wwwroot"
+
++ Next run the playbook again by running the command `ansible-playbook sample.yml -e "tag=<tag to identify your webserver in the AWS console>"` from the Ansible server prompt
+
+Notice how the playbook runs much faster as Ansible determines what elements are the desired and therefore do not need to be touched.
+
+##### Step 4: Debugging
+
+On the Ansible server type the command
+
++ `set ANSIBLE_KEEP_REMOTE_FILES=1`
+
++ run the playbook again by running the command `ansible-playbook sample.yml -e "tag=<tag to identify your webserver in the AWS console>"`
+
++ RDP into the webserver and from the PowerShell Admin prompt nagivate to c:\\Users\\ansible\\AppData\\Local
+
++ Open any of the ansible-tmp-* files in Notepad to get a glimpse of the PowerShell scripts that have run during the deployment 
+
+
 #### AMI Map
 
 Use these AMIs. (Terraform has them pre-loaded.)
