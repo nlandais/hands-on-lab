@@ -80,7 +80,7 @@ Notice how the playbook runs much faster as Ansible determines what elements are
 
 On the Ansible server type the command
 
-+ `set ANSIBLE_KEEP_REMOTE_FILES=1`
++ `export ANSIBLE_KEEP_REMOTE_FILES=1`
 
 + run the playbook again by running the command `ansible-playbook sample.yml -e "tag=<tag to identify your webserver in the AWS console>"`
 
