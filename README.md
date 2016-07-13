@@ -84,7 +84,7 @@ On the Ansible server type the command
 
 + run the playbook again by running the command `ansible-playbook sample.yml -e "tag=<tag to identify your webserver in the AWS console>"`
 
-+ RDP into the webserver and from the PowerShell Admin prompt nagivate to c:\\Users\\ansible\\AppData\\Local
++ RDP into the webserver and from the PowerShell Admin prompt nagivate to c:\\Users\\ansible\\AppData\\Local\\Temp
 
 + Open any of the ansible-tmp-* files in Notepad to get a glimpse of the PowerShell scripts that have run during the deployment 
 
